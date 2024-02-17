@@ -8,6 +8,7 @@ export interface PlaylistItem {
 export class PlaylistsHandler {
   static LIST_SELECTOR = '.lazyLoadingList__list';
   static LIST_ITEM_SELECTOR = '.playableTile__description';
+  static PLAYLISTS_STORAGE_KEY = 'playlists';
 
   private waiter: Waiter;
   playlistItems: PlaylistItem[] = [];
@@ -17,6 +18,12 @@ export class PlaylistsHandler {
     waiter?: Waiter,
   ) {
     this.waiter = waiter || new Waiter();
+  }
+
+  async saveToStorage() {
+    return chrome.storage.local.set({
+      [PlaylistsHandler.PLAYLISTS_STORAGE_KEY]: this.playlistItems,
+    });
   }
 
   async loadPlaylistItems() {
