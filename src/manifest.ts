@@ -28,7 +28,7 @@ export default defineManifest({
   },
   content_scripts: [
     {
-      matches: ['https://soundcloud.com/*'],
+      matches: ['https://soundcloud.com/*', 'https://hypeddit.com/*'],
       js: ['src/contentScript/index.ts'],
     },
   ],
