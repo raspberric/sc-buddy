@@ -1,9 +1,9 @@
-import { defineManifest } from '@crxjs/vite-plugin'
+import { defineManifest } from '@crxjs/vite-plugin';
 //@ts-ignore
-import packageData from '../package.json'
+import packageData from '../package.json';
 
 //@ts-ignore
-const isDev = process.env.NODE_ENV == 'development'
+const isDev = process.env.NODE_ENV == 'development';
 
 export default defineManifest({
   name: `${packageData.displayName || packageData.name}${isDev ? ` ➡️ Dev` : ''}`,
@@ -28,7 +28,7 @@ export default defineManifest({
   },
   content_scripts: [
     {
-      matches: ['http://*/*', 'https://*/*'],
+      matches: ['https://soundcloud.com/*'],
       js: ['src/contentScript/index.ts'],
     },
   ],
@@ -37,9 +37,14 @@ export default defineManifest({
   },
   web_accessible_resources: [
     {
-      resources: ['img/logo-16.png', 'img/logo-34.png', 'img/logo-48.png', 'img/logo-128.png'],
+      resources: [
+        'img/logo-16.png',
+        'img/logo-34.png',
+        'img/logo-48.png',
+        'img/logo-128.png',
+      ],
       matches: [],
     },
   ],
-  permissions: ['sidePanel', 'storage'],
-})
+  permissions: ['storage', 'sidePanel', 'tabs'],
+});
