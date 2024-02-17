@@ -52,4 +52,34 @@ export class PlaylistsHandler {
       path: anchor?.getAttribute('href') || '',
     };
   }
+
+  // TODO: implement playlist parsing
+  async getPlaylistItemsUrls(path: string): Promise<string[]> {
+    const playlistPage = await this.parsePlaylist(path);
+    console.log(playlistPage);
+
+    return [];
+  }
+
+  private async parsePlaylist(path: string) {
+    // ### this could work if you can figure out how to get playlist/track ids
+    // const bodyText = await fetch(
+    //   'https://api-v2.soundcloud.com/tracks?ids=1428048928&client_id=8BBZpqUP1KSN4W6YB64xog2PX4Dw98b1&%5Bobject%20Object%5D=',
+    // ).then((response) => response.json());
+    // console.log(bodyText);
+    // ### below is a dead end - tried parsing <noscripts>
+    // const domParser = new DOMParser();
+    // const playlistDocument = domParser.parseFromString(bodyText, 'text/html');
+    // const trackList = playlistDocument.querySelector('noscript .tracklist');
+    // if (!trackList) {
+    //   throw new UnrecoverableError('No tracklist item found');
+    // }
+    // const tracks = [
+    //   ...trackList.querySelectorAll('a[itemprop="url"]').values(),
+    // ].map((anchor) => ({
+    //   name: anchor.textContent,
+    //   url: anchor.getAttribute('href'),
+    // }));
+    // console.log(tracks);
+  }
 }
