@@ -58,3 +58,37 @@ export class Waiter {
     });
   }
 }
+
+export function waitForSomething<T>(
+  getWaitedObject: () => T,
+  countLimit = 10,
+  interval = 500,
+): Promise<T> {
+  let counter = 0;
+  let item = null;
+  let timeoutId: NodeJS.Timeout | undefined;
+
+  const queueTimeout = (
+    resolve: (value: T | PromiseLike<T>) => void,
+    reject: (reason?: any) => void,
+  ) => {
+
+    timeoutId = setTimeout(() => {
+      item = getWaitedObject();
+
+      if (item) {
+        clearTimeout(timeoutId);
+        resolve(item);
+      }
+      if (counter === countLimit) {
+        reject('No element found! Check element selector or increase timeout!');
+      } else {
+        queueTimeout(resolve, reject);
+      }
+
+      counter++;
+    }, interval);
+  };
+
+  return new Promise((resolve, reject) => queueTimeout(resolve, reject));
+}
