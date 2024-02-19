@@ -1,37 +1,14 @@
 import { UnrecoverableError } from '../utils/error';
-import { Waiter, waitForSomething } from '../utils/waiter';
+import { waitForSomething } from '../utils/waiter';
 import { HypedditHandler } from './hypedditHandler';
-import { isOnHypeddit, isOnSc, isOnSecureSc } from './locators';
+import { isOnHypeddit, isOnSecureSc } from './locators';
 import { PlaylistsHandler } from './playlistsHandler';
 import { TrackHandler } from './trackHandler';
 
-const pathName = window.location.pathname;
+// const pathName = window.location.pathname;
 const origin = window.location.origin;
 
 try {
-  if (isOnSc(origin)) {
-    if (pathName === '/you/sets') {
-      // preparePlaylists(document.querySelector('#content'));
-    }
-    if (!'on track page detect') {
-      chrome.storage.local.onChanged.addListener((changes) => {
-        console.log('storage changed', changes);
-      });
-
-      chrome.runtime.onMessage.addListener((message) => {
-        console.log('background received message', message);
-      });
-
-      // chrome.storage.local
-      //   .get([PlaylistsHandler.PLAYLISTS_STORAGE_KEY])
-      //   .then((result) => {
-      //     parsePlaylist(result[PlaylistsHandler.PLAYLISTS_STORAGE_KEY][1].path);
-      // });
-
-      // downloadTrack(document.querySelector('#content'));
-    }
-  }
-
   if (isOnHypeddit(origin)) {
     downloadFromHypeddit(document.querySelector('.release-content'));
   }
