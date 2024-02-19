@@ -1,5 +1,5 @@
 import { UnrecoverableError } from '../utils/error';
-import { Waiter } from '../utils/waiter';
+import { Waiter, waitForSomething } from '../utils/waiter';
 import { HypedditHandler } from './hypedditHandler';
 import { isOnHypeddit, isOnSc, isOnSecureSc } from './locators';
 import { PlaylistsHandler } from './playlistsHandler';
@@ -12,7 +12,22 @@ try {
   if (isOnSc(origin)) {
     if (pathName === '/you/sets') {
       // preparePlaylists(document.querySelector('#content'));
-    } else {
+    }
+    if (!'on track page detect') {
+      chrome.storage.local.onChanged.addListener((changes) => {
+        console.log('storage changed', changes);
+      });
+
+      chrome.runtime.onMessage.addListener((message) => {
+        console.log('background received message', message);
+      });
+
+      // chrome.storage.local
+      //   .get([PlaylistsHandler.PLAYLISTS_STORAGE_KEY])
+      //   .then((result) => {
+      //     parsePlaylist(result[PlaylistsHandler.PLAYLISTS_STORAGE_KEY][1].path);
+      // });
+
       // downloadTrack(document.querySelector('#content'));
     }
   }
@@ -30,8 +45,9 @@ try {
 
 async function authorizeSc() {
   const container = document.querySelector('#app');
-  const waiter = new Waiter();
-  const button = await waiter.waitForElement(container!, '#submit_signup');
+  const button = await waitForSomething(() =>
+    container?.querySelector('#submit_signup'),
+  );
 
   if (!button) {
     throw new UnrecoverableError('No continue button on SC secure!');
@@ -47,7 +63,7 @@ function downloadFromHypeddit(content: HTMLElement | null) {
   }
 
   const hypedditHandler = new HypedditHandler(content);
-  hypedditHandler.downloadTrack();
+  hypedditHandler.getTrack();
 }
 
 async function preparePlaylists(content: Element | null) {
