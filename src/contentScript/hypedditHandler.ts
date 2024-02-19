@@ -87,10 +87,16 @@ export class HypedditHandler {
   private addComment() {
     (this.content.querySelector('#sc_comment_text') as HTMLInputElement).value =
       'fire';
+
     const buttonUrl = (
       this.content.querySelector('#login_to_sc') as HTMLButtonElement
     ).getAttribute('data-onclick');
-    window.open(buttonUrl!.split("'")[1]);
+
+    window.open(
+      buttonUrl!.split("'")[1],
+      '',
+      'width=1,height=1,scrollbars=0,resizable=0,toolbar=0,location=0,menubar=0,status=0,directories=0',
+    );
   }
 
   private handleIg() {
