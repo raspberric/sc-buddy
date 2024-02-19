@@ -39,10 +39,13 @@ export class HypedditHandler {
   }
 
   private getZindex(selector: string) {
-    return parseInt(
-      getComputedStyle(this.content.querySelector(selector) as HTMLElement)
-        .zIndex,
-    );
+    const element = this.content.querySelector(selector);
+
+    if (!element) {
+      return -1;
+    }
+
+    return parseInt(getComputedStyle(element).zIndex);
   }
 
   private async waitForStepChange(currentStep: HypedditStep) {
@@ -73,8 +76,10 @@ export class HypedditHandler {
   }
 
   private async addEmail() {
-    (this.content.querySelector('#email_name') as HTMLInputElement).value =
-      'Nikola';
+    const emailName = this.content.querySelector('#email_name');
+    if (emailName) {
+      (emailName as HTMLInputElement).value = 'Nikola';
+    }
     (this.content.querySelector('#email_address') as HTMLInputElement).value =
       'expone1@gmail.com';
     (
@@ -85,12 +90,16 @@ export class HypedditHandler {
   }
 
   private addComment() {
-    (this.content.querySelector('#sc_comment_text') as HTMLInputElement).value =
-      'fire';
+    const commentInput = this.content.querySelector('#sc_comment_text');
+    if (commentInput) {
+      (commentInput as HTMLInputElement).value = 'fire';
+    }
 
-    const buttonUrl = (
-      this.content.querySelector('#login_to_sc') as HTMLButtonElement
-    ).getAttribute('data-onclick');
+    const button = this.content.querySelector(
+      '#login_to_sc',
+    ) as HTMLButtonElement;
+
+    const buttonUrl = button.getAttribute('data-onclick') || button.getAttribute('onclick');
 
     window.open(
       buttonUrl!.split("'")[1],
