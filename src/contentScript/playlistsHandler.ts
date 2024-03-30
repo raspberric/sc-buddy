@@ -61,6 +61,7 @@ export class PlaylistsHandler {
     return [];
   }
 
+  // @ts-ignore
   private async parsePlaylist(path: string) {
     // ### this could work if you can figure out how to get playlist/track ids
     // const bodyText = await fetch(
