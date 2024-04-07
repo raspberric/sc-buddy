@@ -1,7 +1,10 @@
-import * as path from 'path'
-import { defineConfig } from 'vite'
-import { crx } from '@crxjs/vite-plugin'
-import manifest from './src/manifest'
+import * as path from 'path';
+import { defineConfig } from 'vite';
+import { crx } from '@crxjs/vite-plugin';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
+import manifest from './src/manifest';
+
+const iconsPath = 'node_modules/@shoelace-style/shoelace/dist/assets/icons';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,7 +22,17 @@ export default defineConfig({
       },
     },
   },
-  plugins: [crx({ manifest })],
+  plugins: [
+    crx({ manifest }),
+    viteStaticCopy({
+      targets: [
+        {
+          src: iconsPath,
+          dest: 'assets',
+        },
+      ],
+    }),
+  ],
   server: {
     port: 5173,
     strictPort: true,
@@ -27,4 +40,4 @@ export default defineConfig({
       port: 5173,
     },
   },
-})
+});
